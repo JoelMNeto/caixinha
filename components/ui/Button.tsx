@@ -10,6 +10,7 @@ export default function Button({title, onPress}: any) {
 
 const styles = StyleSheet.create({
     button: {
+        width: 200,
         backgroundColor: "#007bff",
         padding: 14,
         borderRadius: 8,
