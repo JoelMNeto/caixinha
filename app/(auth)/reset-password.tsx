@@ -2,7 +2,7 @@ import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import { globalStyles } from "@/styles/global";
 import { useState } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 export default function ResetPassword() {
     const [password, setPassword] = useState("");
@@ -14,8 +14,6 @@ export default function ResetPassword() {
 
     return (
         <View style={globalStyles.container}>
-            <Text style={globalStyles.titleText}>Nova Senha</Text>
-
             <Input 
                 placeholder="Nova Senha" 
                 value={password} 

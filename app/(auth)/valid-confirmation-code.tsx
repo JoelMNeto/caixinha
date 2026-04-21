@@ -17,8 +17,6 @@ export default function ValidConfirmationCode() {
 
     return (
         <View style={globalStyles.container}>
-            <Text style={globalStyles.titleText}>Código de Confirmação</Text>
-
             <TouchableOpacity onPress={() => inputRef.current?.focus()}>
                 <View style={styles.inputContainer}>
                     {[...Array(6)].map((_, index) => (

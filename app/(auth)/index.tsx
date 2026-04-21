@@ -3,6 +3,7 @@ import Input from "@/components/ui/Input";
 import { api } from "@/services/api";
 import { saveTokens } from "@/services/auth";
 import { globalStyles } from "@/styles/global";
+import { Image } from 'expo-image';
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -25,8 +26,8 @@ export default function Index() {
   
   return (
     <View style={globalStyles.container}>
-      <Text style={globalStyles.titleText}>Login</Text>
-
+      <Image source={require('@/assets/images/caixinha_icone.png')} style={globalStyles.logo} />
+    
       <Input placeholder="Email" value={email} onChangeText={setEmail} />
 
       <Input

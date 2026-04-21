@@ -3,7 +3,7 @@ import Input from "@/components/ui/Input";
 import { globalStyles } from "@/styles/global";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState("");
@@ -16,8 +16,6 @@ export default function ForgotPassword() {
 
     return (
         <View style={globalStyles.container}>
-            <Text style={globalStyles.titleText}>Recuperar Senha</Text>
-
             <Input 
                 placeholder="Email" 
                 value={email} 

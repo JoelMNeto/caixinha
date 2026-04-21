@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Toast from 'react-native-toast-message';
 import { getAccessToken, getRefreshToken, logout, saveTokens } from './auth';
 import { useLoadingStore } from './loadingStore';
 
@@ -31,6 +32,27 @@ api.interceptors.response.use(
         useLoadingStore.getState().stop();
 
         const originalRequest = error.config;
+
+        let message = 'Erro inesperado';
+
+        if (error.response) {
+            message =
+                error.response.data?.message ||
+                `Erro ${error.response.status}`;
+        } else if (error.request) {
+            message = 'Sem resposta do servidor';
+        } else {
+            message = error.message;
+        }
+
+        Toast.show({
+            type: 'error',
+            text1: 'Erro',
+            text2: message,
+            position: 'top',
+            visibilityTime: 3000,
+        });
+
 
         if (error.response?.status === 401 && 
             !originalRequest._retry &&
