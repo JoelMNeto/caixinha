@@ -5,14 +5,18 @@ import { useRouter } from "expo-router";
 import { useRef, useState } from "react";
 import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 
-export default function ValidConfirmationCode() {
+export interface ValidConfirmationCodeProps {
+    nextScreen: "/reset-password" | "/";
+};
+
+export default function ValidConfirmationCode(props: ValidConfirmationCodeProps) {
     const [confirmationCode, setConfirmationCode] = useState("");
     const inputRef = useRef<TextInput>(null);
 
     const router = useRouter();
 
     const handleSubmit = () => {
-        
+        router.push(`${props.nextScreen}?confirmationCode=${encodeURIComponent(confirmationCode)}`);
     }
 
     return (

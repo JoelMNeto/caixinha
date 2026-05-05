@@ -17,7 +17,7 @@ export default function RootLayout() {
       <Stack.Screen name="forgot-password" options={{ title: 'Recuperar Senha', headerBackTitle: 'Voltar' }}/>
       <Stack.Screen name="reset-password" options={{ title: 'Nova Senha', headerBackTitle: 'Voltar' }}/>
       <Stack.Screen name="valid-confirmation-code" options={{ title: 'Validar Código', headerBackTitle: 'Voltar' }}/>
-      <Stack.Screen name="signup" options={{ title: 'Cadastro', headerBackTitle: 'Voltar' }}/>
+      <Stack.Screen name="onboarding/index" options={{title: 'Criar Conta', headerBackTitle: 'Voltar'}}/>
     </Stack>
     <GlobalLoading />
     <Toast />

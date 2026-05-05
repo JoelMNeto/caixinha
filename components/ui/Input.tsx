@@ -1,21 +1,54 @@
+import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
-import { StyleSheet, TextInput } from "react-native";
+import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 
-export default function Input(props: any) {
+export interface InputProps {
+    [key: string]: any;
+    secure?: boolean;
+}
+
+export default function Input(props: InputProps) {
     const [focused, setFocused] = useState(false);
+
+    const [hidePassword, setHidePassword] = useState(props.secure);
     
     return (
-        <TextInput 
-            onFocus={() => setFocused(true)} 
-            onBlur={() => setFocused(false)} 
-            underlineColorAndroid="transparent"
-            style={[styles.input, { borderColor: focused ? 'blue' : 'gray' }]} 
-            {...props} 
-        />
+        <View style={styles.inputWrapper}>
+            <TextInput 
+                onFocus={() => setFocused(true)} 
+                onBlur={() => setFocused(false)} 
+                underlineColorAndroid="transparent"
+                secureTextEntry={props.secure}
+                style={[styles.input, { borderColor: focused ? 'blue' : 'gray' }]} 
+                {...props} 
+            />
+
+            {props.secure && (
+                <TouchableOpacity
+                    onPress={() => setHidePassword((prev) => !prev)}
+                    style={{
+                        position: "absolute",
+                        right: 0,
+                        top: 10,
+                    }}
+                >
+                    <Ionicons
+                        name={hidePassword ? "eye-off" : "eye"}
+                        size={22}
+                        color="#888"
+                    />
+                </TouchableOpacity>
+            )}
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
+    inputWrapper: {
+        width: '100%',
+        position: 'relative',
+        alignSelf: 'stretch',
+    },
     input: {
         alignSelf: 'stretch',
         height: 50,

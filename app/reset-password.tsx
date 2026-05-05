@@ -1,15 +1,22 @@
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
+import { api } from "@/services/api";
 import { globalStyles } from "@/styles/global";
+import { useRouter } from "expo-router";
 import { useState } from "react";
 import { View } from "react-native";
 
-export default function ResetPassword() {
+export default function ResetPassword(confirmationCode: string) {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
-    const handleSubmit = () => {
+    const router = useRouter();
 
+    const handleSubmit = async () => {
+        await api.post("/users/reset-password", { password, confirmPassword, confirmationCode }).then(() => {
+            alert("Senha redefinida com sucesso!");
+            router.push("/");
+        });
     }
 
     return (

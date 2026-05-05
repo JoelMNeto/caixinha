@@ -1,5 +1,6 @@
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
+import { api } from "@/services/api";
 import { globalStyles } from "@/styles/global";
 import { useRouter } from "expo-router";
 import { useState } from "react";
@@ -10,9 +11,10 @@ export default function ForgotPassword() {
     const router = useRouter();
 
     const handleSubmit = () => {
-
-        router.push('./valid-confirmation-code');
-    }
+        api.post("/users/forgot-password", { email }, { skipAuth: true }).then(() => {
+            router.push('./valid-confirmation-code?nextScreen=/reset-password');
+        });
+    };
 
     return (
         <View style={globalStyles.container}>

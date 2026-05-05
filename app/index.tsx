@@ -50,7 +50,7 @@ export default function Index() {
         <TouchableOpacity>
           <Text 
             style={globalStyles.linkText} 
-            onPress={() => router.push('./signup')}
+            onPress={() => router.push('./onboarding')}
           >Criar Conta</Text>
         </TouchableOpacity>
       </View>
