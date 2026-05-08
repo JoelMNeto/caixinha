@@ -4,7 +4,7 @@ import { api } from "@/services/api";
 import { globalStyles } from "@/styles/global";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { View } from "react-native";
+import { Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, View } from "react-native";
 
 export default function ResetPassword(confirmationCode: string) {
     const [password, setPassword] = useState("");
@@ -20,22 +20,29 @@ export default function ResetPassword(confirmationCode: string) {
     }
 
     return (
-        <View style={globalStyles.container}>
-            <Input 
-                placeholder="Nova Senha" 
-                value={password} 
-                onChangeText={setPassword} 
-                secureTextEntry
-            />
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+            >
+                <View style={[globalStyles.container, { flex: 1 }]}>
+                    <Input 
+                        placeholder="Nova Senha" 
+                        value={password} 
+                        onChangeText={setPassword} 
+                        secure={true}
+                    />
 
-            <Input 
-                placeholder="Confirmar Nova Senha" 
-                value={confirmPassword} 
-                onChangeText={setConfirmPassword} 
-                secureTextEntry
-            />
+                    <Input 
+                        placeholder="Confirmar Nova Senha" 
+                        value={confirmPassword} 
+                        onChangeText={setConfirmPassword} 
+                        secure={true}
+                    />
 
-            <Button title="Redefinir Senha" onPress={handleSubmit} />
-        </View>
+                    <Button title="Redefinir Senha" onPress={handleSubmit} />
+                </View>
+            </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
     );
 }

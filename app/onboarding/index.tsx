@@ -2,11 +2,11 @@ import InputStep from "@/components/ui/InputStep";
 import ProgressBar from "@/components/ui/ProgressBar";
 import { api } from "@/services/api";
 import { globalStyles } from "@/styles/global";
-import { validateStep } from "@/utils/validation";
+import { validateFormField } from "@/utils/validation";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { Keyboard, KeyboardAvoidingView, Platform, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 
 const steps = ["name", "nickname", "email", "password", "confirmationPassword"];
 
@@ -32,13 +32,13 @@ export default function Onboarding() {
 
         setForm(updatedForm);
 
-        const result = validateStep(key, updatedForm);
+        const result = validateFormField(key, updatedForm);
 
         setError(result.error); 
     };
 
     const next = async () => {
-        const result = validateStep(currentStep, form);
+        const result = validateFormField(currentStep, form);
 
         if (result.error) {
             setError(result.error);
@@ -112,37 +112,45 @@ export default function Onboarding() {
     
     const progress = (stepIndex + 1) / steps.length;
 
-    const { isValid } = validateStep(currentStep, form);
+    const { isValid } = validateFormField(currentStep, form);
      
     return (
-        <View style={globalStyles.container}>
-            <ProgressBar progress={progress} />
-
-            {renderStep()}
-
-            <TouchableOpacity            
-                disabled={!isValid}
-                onPress={next}
-                style={{
-                    position: "absolute",
-                    bottom: 40,
-                    right: 24,
-                    width: 64,
-                    height: 64,
-                    borderRadius: 32,
-                    backgroundColor: "#05be43",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    opacity: isValid ? 1 : 0.4,
-                    shadowColor: "#000",
-                    shadowOpacity: 0.2,
-                    shadowRadius: 5,
-                    shadowOffset: { width: 0, height: 3 },
-                    elevation: 5,
-                }}
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
             >
-                <Ionicons name="arrow-forward" size={24} color="white" />
-            </TouchableOpacity>
-        </View>
+                <View style={[globalStyles.container, { flex: 1 }]}>
+                    <ProgressBar progress={progress} />
+
+                    {renderStep()}
+
+                    <TouchableOpacity            
+                        disabled={!isValid}
+                        onPress={next}
+                        style={{
+                            position: "absolute",
+                            bottom: 80,
+                            right: 24,
+                            width: 64,
+                            height: 64,
+                            borderRadius: 32,
+                            backgroundColor: "#05be43",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            opacity: isValid ? 1 : 0.4,
+                            shadowColor: "#000",
+                            shadowOpacity: 0.2,
+                            shadowRadius: 5,
+                            shadowOffset: { width: 0, height: 3 },
+                            elevation: 5,
+                            marginBottom: 20,
+                        }}
+                    >
+                        <Ionicons name="arrow-forward" size={24} color="white" />
+                    </TouchableOpacity>
+                </View>
+            </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
     );
 }

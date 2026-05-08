@@ -30,13 +30,8 @@ export default function InputStep({
                 autoFocus
                 keyboardType={keyboardType}
                 secure={secure}
+                error={error}
             />
-
-            {error ? (
-                <Text style={styles.inputError}>
-                    {error}
-                </Text>
-            ) : null}
         </View>
     );
 }
@@ -50,9 +45,5 @@ const styles = StyleSheet.create({
     inputLabel: {
         fontSize: 24,
         marginBottom: 20
-    },
-    inputError: {
-        marginTop: 8,
-        color: "red"
     }
 });

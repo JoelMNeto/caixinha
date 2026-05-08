@@ -1,4 +1,4 @@
-export const validateStep = (step: string, form: any) => {
+export const validateFormField = (step: string, form: any) => {
     switch (step) {
         case "name":
             if (!form.name || form.name.trim().length < 3) {

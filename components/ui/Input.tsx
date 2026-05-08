@@ -1,10 +1,11 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
-import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export interface InputProps {
     [key: string]: any;
     secure?: boolean;
+    error?: string;
 }
 
 export default function Input(props: InputProps) {
@@ -18,10 +19,18 @@ export default function Input(props: InputProps) {
                 onFocus={() => setFocused(true)} 
                 onBlur={() => setFocused(false)} 
                 underlineColorAndroid="transparent"
-                secureTextEntry={props.secure}
-                style={[styles.input, { borderColor: focused ? 'blue' : 'gray' }]} 
+                secureTextEntry={hidePassword}
+                style={[styles.input, { borderColor: focused ? 'green' : 'gray' }]} 
                 {...props} 
             />
+
+            <View style={styles.inputErrorWrapper}>
+                {props.error ? (
+                    <Text style={styles.inputErrorText}>
+                        {props.error}
+                    </Text>
+                ) : null}
+            </View> 
 
             {props.secure && (
                 <TouchableOpacity
@@ -30,6 +39,8 @@ export default function Input(props: InputProps) {
                         position: "absolute",
                         right: 0,
                         top: 10,
+                        marginRight: 12,
+                        marginTop: 2,
                     }}
                 >
                     <Ionicons
@@ -56,7 +67,12 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         backgroundColor: 'white',
         paddingLeft: 12,
-        marginBottom: 16,
         borderRadius: 8
+    },
+    inputErrorWrapper: {
+        marginBottom: 16,
+    },
+    inputErrorText: {
+        color: "red"
     }
 });
