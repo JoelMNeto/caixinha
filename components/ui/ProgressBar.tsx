@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { Dimensions, View } from "react-native";
 import Animated, {
-    useAnimatedStyle,
-    useSharedValue,
-    withTiming,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
 } from "react-native-reanimated";
 
 const { width } = Dimensions.get("window");
@@ -16,7 +16,7 @@ export default function ProgressBar({ progress }: Props) {
   const progressWidth = useSharedValue(0);
 
   useEffect(() => {
-    progressWidth.value = withTiming(progress * width, {
+    progressWidth.value = withTiming(progress * (width - 30), {
       duration: 300,
     });
   }, [progress]);

@@ -7,7 +7,8 @@ import { validateFormField } from "@/utils/validation";
 import { Image } from 'expo-image';
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
 export default function Index() {
   const router = useRouter();
@@ -34,53 +35,62 @@ export default function Index() {
 
     router.push("./home");
   }
+
+  const updateEmail = (value: string) => {
+    const emailResult = validateFormField("email", { email: value });
+
+    if (emailResult.error) {
+      setError(emailResult.error);
+    } else {
+      setEmail(value);
+      setError("");
+    }
+  };
   
   return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <KeyboardAvoidingView
-                style={{ flex: 1 }}
-                behavior={Platform.OS === "ios" ? "padding" : "height"}
-            >
-                <View style={[globalStyles.container, { flex: 1 }]}>
-                    <Image source={require('@/assets/images/caixinha_icone.png')} style={globalStyles.logo} />
-                  
-                    <Input 
-                      placeholder="Email" 
-                      value={email} 
-                      onChangeText={(value: string) => {
-                        setEmail(value);
-                        if (error) setError("");
-                      }} 
-                      error={error}
-                    />
+    <KeyboardAwareScrollView
+      bottomOffset={20}
+      contentContainerStyle={{ flexGrow: 1 }}
+      keyboardShouldPersistTaps="handled"
+    >
+      <View style={{ flex: 1 }}>
+        <View style={[globalStyles.container, { flex: 1 }]}>
+          <Image source={require('@/assets/images/caixinha_icone.png')} style={globalStyles.logo} />
+          
+          <Input 
+            placeholder="Email" 
+            value={email} 
+            onChangeText={(value: string) => updateEmail(value)} 
+            error={error}
+          />
 
-                    <Input
-                      placeholder="Password" 
-                      secure={true} 
-                      value={password} 
-                      onChangeText={setPassword} 
-                    />
+          <Input
+            placeholder="Password" 
+            secure={true} 
+            value={password} 
+            onChangeText={setPassword} 
+          />
 
-                    <TouchableOpacity style={styles.forgotContainer}>
-                      <Text 
-                      style={[globalStyles.linkText, {marginTop: 0}]} 
-                      onPress={() => router.push('./forgot-password')}>Esqueci minha senha</Text>
-                    </TouchableOpacity>
-                    
-                    <Button title="Entrar" onPress={handleLogin} />
+          <TouchableOpacity style={styles.forgotContainer}>
+            <Text 
+            style={[globalStyles.linkText, {marginTop: 0}]} 
+            onPress={() => router.push('./forgot-password')}>Esqueci minha senha</Text>
+          </TouchableOpacity>
+          
+          <Button title="Entrar" onPress={handleLogin} />
 
-                    <View style={styles.registerContainer}>
-                      <Text style={{marginTop: 16}}>Não tem conta? </Text>
-                      <TouchableOpacity>
-                        <Text 
-                          style={globalStyles.linkText} 
-                          onPress={() => router.push('./onboarding')}
-                        >Criar Conta</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-            </KeyboardAvoidingView>
-        </TouchableWithoutFeedback>
+          <View style={styles.registerContainer}>
+            <Text style={{marginTop: 16}}>Não tem conta? </Text>
+            <TouchableOpacity>
+              <Text 
+                style={globalStyles.linkText} 
+                onPress={() => router.push('./onboarding')}
+              >Criar Conta</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    </KeyboardAwareScrollView>
   );
 }
 

@@ -5,7 +5,8 @@ import { globalStyles } from "@/styles/global";
 import { validateFormField } from "@/utils/validation";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, View } from "react-native";
+import { View } from "react-native";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState("");
@@ -26,27 +27,36 @@ export default function ForgotPassword() {
             router.push('./valid-confirmation-code?nextScreen=/reset-password');
         });
     };
+    
+    const updateEmail = (value: string) => {
+        const emailResult = validateFormField("email", { email: value });
+
+        if (emailResult.error) {
+            setError(emailResult.error);
+        } else {
+            setEmail(value);
+            setError("");
+        }
+    };
 
     return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <KeyboardAvoidingView
-                style={{ flex: 1 }}
-                behavior={Platform.OS === "ios" ? "padding" : "height"}
-            >
+        <KeyboardAwareScrollView
+            bottomOffset={20}
+            contentContainerStyle={{ flexGrow: 1 }}
+            keyboardShouldPersistTaps="handled"
+        >
+            <View style={{ flex: 1 }}>
                 <View style={[globalStyles.container, { flex: 1 }]}>
                     <Input 
                         placeholder="Email" 
                         value={email} 
-                        onChangeText={(value: string) => {
-                            setEmail(value);
-                            if (error) setError("");
-                        }} 
+                        onChangeText={(value: string) => updateEmail(value)} 
                         error={error}
                     />
 
                     <Button title="Enviar" onPress={handleSubmit} />
                 </View>
-            </KeyboardAvoidingView>
-        </TouchableWithoutFeedback>
+            </View>
+        </KeyboardAwareScrollView>
     );
 }

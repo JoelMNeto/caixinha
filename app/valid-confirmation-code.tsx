@@ -1,30 +1,29 @@
 import Button from "@/components/ui/Button";
 import { globalStyles } from "@/styles/global";
 import { Text } from "@react-navigation/elements";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useRef, useState } from "react";
-import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
-export interface ValidConfirmationCodeProps {
-    nextScreen: "/reset-password" | "/";
-};
-
-export default function ValidConfirmationCode(props: ValidConfirmationCodeProps) {
+export default function ValidConfirmationCode() {
+    const { nextScreen } = useLocalSearchParams<{ nextScreen: string }>();
     const [confirmationCode, setConfirmationCode] = useState("");
     const inputRef = useRef<TextInput>(null);
 
     const router = useRouter();
 
     const handleSubmit = () => {
-        router.push(`${props.nextScreen}?confirmationCode=${encodeURIComponent(confirmationCode)}`);
+        router.push({ pathname: nextScreen as any, params: { confirmationCode } });
     }
 
     return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <KeyboardAvoidingView
-                style={{ flex: 1 }}
-                behavior={Platform.OS === "ios" ? "padding" : "height"}
-            >
+        <KeyboardAwareScrollView
+            bottomOffset={20}
+            contentContainerStyle={{ flexGrow: 1 }}
+            keyboardShouldPersistTaps="handled"
+        >
+            <View style={{ flex: 1 }}>
                 <View style={[globalStyles.container, { flex: 1 }]}>
                     <TouchableOpacity onPress={() => inputRef.current?.focus()}>
                         <View style={styles.inputContainer}>
@@ -49,8 +48,8 @@ export default function ValidConfirmationCode(props: ValidConfirmationCodeProps)
 
                     <Button title="Confirmar" onPress={handleSubmit} />
                 </View>
-            </KeyboardAvoidingView>
-        </TouchableWithoutFeedback>
+            </View>
+        </KeyboardAwareScrollView>
     );
 }
 

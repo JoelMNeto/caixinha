@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
         borderRadius: 8
     },
     inputErrorWrapper: {
+        marginLeft: 5,
         marginBottom: 16,
     },
     inputErrorText: {

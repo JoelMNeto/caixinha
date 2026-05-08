@@ -6,7 +6,8 @@ import { validateFormField } from "@/utils/validation";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Keyboard, KeyboardAvoidingView, Platform, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
 const steps = ["name", "nickname", "email", "password", "confirmationPassword"];
 
@@ -115,12 +116,13 @@ export default function Onboarding() {
     const { isValid } = validateFormField(currentStep, form);
      
     return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <KeyboardAvoidingView
-                style={{ flex: 1 }}
-                behavior={Platform.OS === "ios" ? "padding" : "height"}
-            >
-                <View style={[globalStyles.container, { flex: 1 }]}>
+        <KeyboardAwareScrollView
+            bottomOffset={100}
+            contentContainerStyle={{ flexGrow: 1 }}
+            keyboardShouldPersistTaps="handled"
+        >
+            <View style={{ flex: 1 }}>
+                <View style={[globalStyles.container]}>
                     <ProgressBar progress={progress} />
 
                     {renderStep()}
@@ -144,13 +146,12 @@ export default function Onboarding() {
                             shadowRadius: 5,
                             shadowOffset: { width: 0, height: 3 },
                             elevation: 5,
-                            marginBottom: 20,
                         }}
                     >
                         <Ionicons name="arrow-forward" size={24} color="white" />
                     </TouchableOpacity>
                 </View>
-            </KeyboardAvoidingView>
-        </TouchableWithoutFeedback>
+            </View>
+        </KeyboardAwareScrollView>
     );
 }

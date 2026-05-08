@@ -2,11 +2,13 @@ import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import { api } from "@/services/api";
 import { globalStyles } from "@/styles/global";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
-import { Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, View } from "react-native";
+import { View } from "react-native";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
-export default function ResetPassword(confirmationCode: string) {
+export default function ResetPassword() {
+    const { confirmationCode } = useLocalSearchParams<{ confirmationCode: string }>();
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -20,11 +22,12 @@ export default function ResetPassword(confirmationCode: string) {
     }
 
     return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <KeyboardAvoidingView
-                style={{ flex: 1 }}
-                behavior={Platform.OS === "ios" ? "padding" : "height"}
-            >
+        <KeyboardAwareScrollView
+            bottomOffset={20}
+            contentContainerStyle={{ flexGrow: 1 }}
+            keyboardShouldPersistTaps="handled"
+        >
+            <View style={{ flex: 1 }}>
                 <View style={[globalStyles.container, { flex: 1 }]}>
                     <Input 
                         placeholder="Nova Senha" 
@@ -42,7 +45,7 @@ export default function ResetPassword(confirmationCode: string) {
 
                     <Button title="Redefinir Senha" onPress={handleSubmit} />
                 </View>
-            </KeyboardAvoidingView>
-        </TouchableWithoutFeedback>
+            </View>
+        </KeyboardAwareScrollView>
     );
 }
