@@ -14,6 +14,17 @@ export const globalStyles = StyleSheet.create({
         marginBottom: 20,
         textAlign: "center"
     },
+    title: {
+        fontSize: 28,
+        fontWeight: "bold",
+        marginBottom: 8,
+        color: "#000",
+    },
+    subtitle: {
+        fontSize: 14,
+        color: "#666",
+        marginBottom: 32,
+    },
     linkText: {
         marginTop: 16,
         color: "blue",

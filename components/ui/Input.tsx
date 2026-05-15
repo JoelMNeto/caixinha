@@ -11,7 +11,7 @@ export interface InputProps {
 export default function Input(props: InputProps) {
     const [focused, setFocused] = useState(false);
 
-    const [hidePassword, setHidePassword] = useState(props.secure);
+    const [hidePassword, setHidePassword] = useState(true);
     
     return (
         <View style={styles.inputWrapper}>
@@ -19,7 +19,7 @@ export default function Input(props: InputProps) {
                 onFocus={() => setFocused(true)} 
                 onBlur={() => setFocused(false)} 
                 underlineColorAndroid="transparent"
-                secureTextEntry={hidePassword}
+                secureTextEntry={props.secure && hidePassword}
                 style={[styles.input, { borderColor: focused ? 'green' : 'gray' }]} 
                 {...props} 
             />
@@ -44,7 +44,7 @@ export default function Input(props: InputProps) {
                     }}
                 >
                     <Ionicons
-                        name={hidePassword ? "eye-off" : "eye"}
+                        name={hidePassword ? "eye" : "eye-off"}
                         size={22}
                         color="#888"
                     />

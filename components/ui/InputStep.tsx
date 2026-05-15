@@ -16,7 +16,7 @@ export default function InputStep({
     onChange,
     error,
     keyboardType,
-    secure = false
+    secure
 }: InputStepProps) {
     return (
         <View style={styles.inputContainer}>

@@ -1,4 +1,6 @@
 import Button from "@/components/ui/Button";
+import { api } from "@/services/api";
+import { saveTokens } from "@/services/auth";
 import { globalStyles } from "@/styles/global";
 import { Text } from "@react-navigation/elements";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -8,13 +10,29 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
 export default function ValidConfirmationCode() {
     const { nextScreen } = useLocalSearchParams<{ nextScreen: string }>();
+    const { confirmationCodeUrl } = useLocalSearchParams<{ confirmationCodeUrl: string }>();
+    const { email } = useLocalSearchParams<{ email: string }>();
+    const { password } = useLocalSearchParams<{ password: string }>();
     const [confirmationCode, setConfirmationCode] = useState("");
     const inputRef = useRef<TextInput>(null);
 
     const router = useRouter();
 
-    const handleSubmit = () => {
-        router.push({ pathname: nextScreen as any, params: { confirmationCode } });
+    const handleSubmit = async () => {
+        try {
+            await api.put(confirmationCodeUrl, { confirmationCode }, { skipAuth: true });
+
+            const { data } = await api.post("/auth/login", 
+                { email, password }, 
+                { skipAuth: true }
+            );
+
+            await saveTokens(data.token, data.refreshToken);
+
+            router.push({ pathname: nextScreen as any, params: { confirmationCode } });
+        } catch (error) {
+            console.error("Erro ao enviar código de confirmação ou fazer login:", error);
+        }
     }
 
     return (

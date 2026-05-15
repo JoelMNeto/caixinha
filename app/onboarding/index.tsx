@@ -25,6 +25,7 @@ export default function Onboarding() {
     });
 
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const currentStep = steps[stepIndex];
 
@@ -36,6 +37,33 @@ export default function Onboarding() {
         const result = validateFormField(key, updatedForm);
 
         setError(result.error); 
+    };
+
+    const submitRegistration = async () => {
+        setLoading(true);
+        setError("");
+
+        try {
+            await api.post("/users/register", form, { skipAuth: true });
+            router.replace({
+                pathname: "/valid-confirmation-code",
+                params: { 
+                    nextScreen: "/setup-household", 
+                    confirmationCodeUrl: "/users/verify-account",
+                    email: form.email,
+                    password: form.password,
+                },
+            });
+        } catch (e: any) {
+            const message =
+                e?.response?.data?.message ??
+                e?.message ??
+                "Erro ao registrar. Tente novamente.";
+
+            setError(message);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const next = async () => {
@@ -51,9 +79,7 @@ export default function Onboarding() {
         if (stepIndex < steps.length - 1) {
             setStepIndex(stepIndex + 1);
         } else {
-            await api.post("/users/register", form).then(() => {
-                router.replace("/");
-            });
+            await submitRegistration();
         }
     };
 
@@ -93,7 +119,7 @@ export default function Onboarding() {
                         value={form.password}
                         onChange={(v) => updateField("password", v)}
                         error={error}
-                        secure
+                        secure={true}
                     />
                 );
             case "confirmationPassword":
@@ -103,7 +129,7 @@ export default function Onboarding() {
                         value={form.confirmationPassword}
                         onChange={(v) => updateField("confirmationPassword", v)}
                         error={error}
-                        secure
+                        secure={true}
                     />
                 );
             default:
@@ -128,7 +154,7 @@ export default function Onboarding() {
                     {renderStep()}
 
                     <TouchableOpacity            
-                        disabled={!isValid}
+                        disabled={!isValid || loading}
                         onPress={next}
                         style={{
                             position: "absolute",
@@ -140,7 +166,7 @@ export default function Onboarding() {
                             backgroundColor: "#05be43",
                             alignItems: "center",
                             justifyContent: "center",
-                            opacity: isValid ? 1 : 0.4,
+                            opacity: !isValid || loading ? 0.4 : 1,
                             shadowColor: "#000",
                             shadowOpacity: 0.2,
                             shadowRadius: 5,

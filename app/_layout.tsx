@@ -20,6 +20,8 @@ export default function RootLayout() {
         <Stack.Screen name="reset-password" options={{ title: 'Nova Senha', headerBackTitle: 'Voltar' }}/>
         <Stack.Screen name="valid-confirmation-code" options={{ title: 'Validar Código', headerBackTitle: 'Voltar' }}/>
         <Stack.Screen name="onboarding/index" options={{title: 'Criar Conta', headerBackTitle: 'Voltar'}}/>
+        <Stack.Screen name="setup-household/index" options={{title: 'Configurar Household', headerBackTitle: 'Voltar'}}/>
+        <Stack.Screen name="home/index" options={{headerShown: false}}/>
       </Stack>
     </KeyboardProvider>
     <GlobalLoading />

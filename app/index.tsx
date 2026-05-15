@@ -31,20 +31,13 @@ export default function Index() {
       { skipAuth: true }
     );
 
-    await saveTokens(data.accessToken, data.refreshToken);
+    await saveTokens(data.token, data.refreshToken);
 
     router.push("./home");
   }
 
   const updateEmail = (value: string) => {
-    const emailResult = validateFormField("email", { email: value });
-
-    if (emailResult.error) {
-      setError(emailResult.error);
-    } else {
-      setEmail(value);
-      setError("");
-    }
+    setEmail(value);
   };
   
   return (

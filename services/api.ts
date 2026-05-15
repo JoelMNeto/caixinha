@@ -4,7 +4,7 @@ import { getAccessToken, getRefreshToken, logout, saveTokens } from './auth';
 import { useLoadingStore } from './loadingStore';
 
 export const api = axios.create({
-    baseURL: 'http://localhost:8080/api/v1',
+    baseURL: 'http://192.168.0.21:8080/api/v1',
 });
 
 let isRefreshing = false;
@@ -14,7 +14,7 @@ api.interceptors.request.use(async (config) => {
     useLoadingStore.getState().start();
 
     const token = await getAccessToken();
-
+    
     if (token && !config.skipAuth) {
         config.headers.Authorization = `Bearer ${token}`;
     }
